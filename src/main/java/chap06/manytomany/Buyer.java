@@ -21,16 +21,7 @@ public class Buyer {
 
     private String buyerName;
 
-    @ManyToMany
-    @JoinTable(name = "BUYER_PRODUCT",
-            joinColumns = @JoinColumn(name = "BUYER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "PRODUCT_ID"))
-    private List<Product> products = new ArrayList<Product>();
-
-    public void addProduct(Product product){
-        this.products.add(product);
-        product.getBuyers().add(this);
-    }
-
+    @OneToMany(mappedBy = "buyer")
+    private List<BuyerProduct> buyerProducts;
 
 }

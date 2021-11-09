@@ -10,15 +10,18 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@IdClass(BuyerProductId.class)
 public class BuyerProduct {
 
     @Id
+    @GeneratedValue
+    @Column(name = "BUYERPRODUCT_ID")
+    private Long id;
+
+
     @ManyToOne
     @JoinColumn(name = "BUYER_ID")
     private Buyer buyer;
 
-    @Id
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;

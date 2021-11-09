@@ -38,20 +38,12 @@ public class ManyToManyTest {
     }
     public static void testFind(EntityManager em){
 
-        BuyerProductId buyerProductId = new BuyerProductId();
-        Buyer buyer = em.find(Buyer.class, 1L);
-        Product product = em.find(Product.class, 1L);
+        BuyerProduct buyerProduct = em.find(BuyerProduct.class, 1L);
+        Buyer buyer = buyerProduct.getBuyer();
+        Product product = buyerProduct.getProduct();
 
-        buyerProductId.setBuyer(buyer);
-        buyerProductId.setProduct(product);
-
-        BuyerProduct buyerProduct = em.find(BuyerProduct.class, buyerProductId);
-
-        Buyer findBuyer = buyerProduct.getBuyer();
-        Product findProduct = buyerProduct.getProduct();
-
-        System.out.println(findBuyer.getBuyerName());
-        System.out.println(findProduct.getName());
+        System.out.println(buyer.getBuyerName());
+        System.out.println(product.getName());
         System.out.println(buyerProduct.getOrderAmount());
 
 

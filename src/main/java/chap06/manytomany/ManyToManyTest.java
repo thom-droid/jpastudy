@@ -12,36 +12,47 @@ public class ManyToManyTest {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
         EntityManager em = emf.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
+        testSave(em);
+        testFind(em);
 
+    }
+
+    public static void testSave(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
         tx.begin();
 
-        Product product1 = new Product();
-        product1.setName("product1");
-        em.persist(product1);
-
         Buyer buyer = new Buyer();
-        buyer.setBuyerName("buyer1");
-        buyer.addProduct(product1);
+        buyer.setBuyerName("hyeonsu");
         em.persist(buyer);
 
+        Product productA = new Product();
+        productA.setName("productA");
+        em.persist(productA);
+
+        BuyerProduct buyerProduct = new BuyerProduct();
+        buyerProduct.setBuyer(buyer);
+        buyerProduct.setProduct(productA);
+        buyerProduct.setOrderAmount(2);
+        em.persist(buyerProduct);
         tx.commit();
+    }
+    public static void testFind(EntityManager em){
 
-        EntityTransaction tx2 = em.getTransaction();
-        tx2.begin();
-        Buyer findBuyer = em.find(Buyer.class, 1L);
-        List<Product> products = findBuyer.getProducts(); // 객체 그래프 탐색
+        BuyerProductId buyerProductId = new BuyerProductId();
+        Buyer buyer = em.find(Buyer.class, 1L);
+        Product product = em.find(Product.class, 1L);
 
-        for(Product p: products){
-            System.out.println(p.getName());
-        }
+        buyerProductId.setBuyer(buyer);
+        buyerProductId.setProduct(product);
 
-        Product findProduct = em.find(Product.class, 1L);
-        List<Buyer> buyers = findProduct.getBuyers();
+        BuyerProduct buyerProduct = em.find(BuyerProduct.class, buyerProductId);
 
-        for(Buyer b : buyers){
-            System.out.println(b.getBuyerName());
-        }
+        Buyer findBuyer = buyerProduct.getBuyer();
+        Product findProduct = buyerProduct.getProduct();
+
+        System.out.println(findBuyer.getBuyerName());
+        System.out.println(findProduct.getName());
+        System.out.println(buyerProduct.getOrderAmount());
 
 
     }

@@ -1,5 +1,8 @@
 package chap07.composite_key;
 
+import chap07.composite_key.embedded_id.ChildId;
+import chap07.composite_key.embedded_id.GrandChildId;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -14,21 +17,26 @@ public class CompositeKeyAapp {
 
         tx.begin();
         Parent parent = new Parent();
-        parent.setId1("parent1");
-        parent.setId2("parent2");
-        parent.setName("마들렌느 시장");
+        parent.setName("mother");
+        parent.setId("parent1");
         em.persist(parent);
 
         Child child = new Child();
-        child.setId("child1");
-        child.setParent(parent);
-        em.persist(child);
-        tx.commit();
 
-        tx.begin();
-        ParentId parentId = new ParentId("parent1", "parent2");
-        Parent parent1 = em.find(Parent.class, parentId);
-        System.out.println(parent1.toString());
+        ChildId childId = new ChildId("parent1", "child1");
+        child.setId(childId);
+        child.setParent(parent);
+        child.setName("boy");
+        em.persist(child);
+
+        GrandChild grandChild = new GrandChild();
+        GrandChildId grandChildId = new GrandChildId(childId, "grandchild1");
+        grandChild.setId(grandChildId);
+        grandChild.setChild(child);
+        grandChild.setName("yummy");
+        em.persist(grandChild);
+
+        tx.commit();
 
 
     }

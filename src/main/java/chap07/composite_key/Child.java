@@ -1,5 +1,6 @@
 package chap07.composite_key;
 
+import chap07.composite_key.embedded_id.ChildId;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,14 +15,13 @@ import javax.persistence.*;
 @Entity
 public class Child {
 
-    @Id
-    private String id;
+    @EmbeddedId
+    private ChildId id;
 
+    @MapsId("parentId") // ChildId.parentId
     @ManyToOne
-    @JoinColumns({
-      @JoinColumn(name = "PARENT_ID1", referencedColumnName = "PARENT_ID1"),
-      @JoinColumn(name = "PARENT_ID2", referencedColumnName = "PARENT_ID2")
-    })
+    @JoinColumn(name = "PARENT_ID")
     private Parent parent;
 
+    private String name;
 }

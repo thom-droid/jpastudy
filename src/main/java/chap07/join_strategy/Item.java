@@ -1,4 +1,4 @@
-package joined_strategy;
+package chap07.join_strategy;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

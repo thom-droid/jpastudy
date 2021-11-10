@@ -1,4 +1,4 @@
-package joined_strategy;
+package chap07.join_strategy;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

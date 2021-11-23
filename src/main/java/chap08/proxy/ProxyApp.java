@@ -17,7 +17,8 @@ public class ProxyApp {
 //        saveWithoutCascade(em);
         saveWithCascade(em);
 //        deleteWithoutCascade(em);
-        deleteWithCascade(em);
+//        deleteWithCascade(em);
+        removeOrphanObject(em);
     }
 
     public static void loadingTest(EntityManager em){
@@ -132,11 +133,19 @@ public class ProxyApp {
 
     }
 
-    public static void deleteWithCascade(EntityManager em){
+    private static void deleteWithCascade(EntityManager em){
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         Restaurant restaurant = em.find(Restaurant.class, 1L);
         em.remove(restaurant);
+        tx.commit();
+    }
+
+    public static void removeOrphanObject(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Restaurant restaurant = em.find(Restaurant.class, 1L);
+        restaurant.getDishes().clear();
         tx.commit();
     }
 }

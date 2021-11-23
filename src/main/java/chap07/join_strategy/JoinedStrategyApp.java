@@ -24,5 +24,13 @@ public class JoinedStrategyApp {
 
         tx.commit();
 
+        tx.begin();
+        Album album = em.find(Album.class, 1L);
+        System.out.println(album.getId());
+        System.out.println(album.getName());
+        System.out.println(album.getPrice());
+        System.out.println(album.toString());
+        tx.commit();
+
     }
 }

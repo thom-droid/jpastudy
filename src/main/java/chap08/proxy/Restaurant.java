@@ -20,7 +20,7 @@ public class Restaurant {
 
     private String name;
 
-    @OneToMany(mappedBy = "restaurant", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Dish> dishes = new ArrayList<>();
 
 }

@@ -19,7 +19,7 @@ public class Dish {
     private String name;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "RESTAURANT_ID")
+    @JoinColumn(name = "RESTAURANT_ID", nullable = false)
     private Restaurant restaurant;
 
 }

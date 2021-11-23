@@ -4,10 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @NoArgsConstructor
 @Setter
@@ -20,5 +17,15 @@ import javax.persistence.Entity;
 public class Member extends BaseEntity{
 
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "TEAM_ID", nullable = false)
+    private Team team;
+
+    public void addTeam(Team team){
+        this.team = team;
+        team.getMembers().add(this);
+    }
+
 
 }

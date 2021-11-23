@@ -14,6 +14,10 @@ public class ProxyApp {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
         EntityManager em = emf.createEntityManager();
 //        collectionWrapperTest(em);
+//        saveWithoutCascade(em);
+        saveWithCascade(em);
+//        deleteWithoutCascade(em);
+        deleteWithCascade(em);
     }
 
     public static void loadingTest(EntityManager em){
@@ -58,7 +62,6 @@ public class ProxyApp {
         em.persist(team);
         em.persist(member);
 
-
         tx.commit();
 
         em.clear();
@@ -68,5 +71,72 @@ public class ProxyApp {
         List<Member> members = t2.getMembers();
         System.out.println(members.getClass().getName());
 
+    }
+
+    public static void saveWithoutCascade(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("A");
+        em.persist(restaurant1);
+
+        Dish dish1 = new Dish();
+        dish1.setName("a");
+        dish1.setRestaurant(restaurant1);
+        restaurant1.getDishes().add(dish1);
+        em.persist(dish1);
+
+        Dish dish2 = new Dish();
+        dish2.setName("b");
+        dish2.setRestaurant(restaurant1);
+        restaurant1.getDishes().add(dish2);
+        em.persist(dish2);
+
+        tx.commit();
+    }
+
+    public static void saveWithCascade(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+
+        tx.begin();
+        Restaurant restaurant1 = new Restaurant();
+        restaurant1.setName("A");
+
+        Dish dish1 = new Dish();
+        dish1.setName("a");
+        dish1.setRestaurant(restaurant1);
+        restaurant1.getDishes().add(dish1);
+
+        Dish dish2 = new Dish();
+        dish2.setName("b");
+        dish2.setRestaurant(restaurant1);
+        restaurant1.getDishes().add(dish2);
+
+        em.persist(restaurant1);
+
+        tx.commit();
+    }
+    public static void deleteWithoutCascade(EntityManager em){
+
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Restaurant restaurant = em.find(Restaurant.class, 1L);
+        Dish dish = em.find(Dish.class, 1L);
+        Dish dish1 = em.find(Dish.class, 2L);
+
+        em.remove(dish);
+        em.remove(dish1);
+        em.remove(restaurant);
+        tx.commit();
+
+    }
+
+    public static void deleteWithCascade(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Restaurant restaurant = em.find(Restaurant.class, 1L);
+        em.remove(restaurant);
+        tx.commit();
     }
 }

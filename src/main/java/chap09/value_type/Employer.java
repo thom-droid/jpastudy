@@ -5,6 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,5 +30,14 @@ public class Employer {
 
     @Embedded
     PhoneNumber phoneNumber;
+
+    @ElementCollection
+    @CollectionTable(name = "FAVORITE_FOOD", joinColumns = @JoinColumn(name = "EMPLOYER_ID"))
+    @Column(name = "FOOD_NAME")
+    private Set<String> favoriteFood = new HashSet<>();
+
+    @ElementCollection
+    @CollectionTable(name = "ADDRESS_HISTORY", joinColumns = @JoinColumn(name = "EMPLOYER_ID"))
+    private List<Address> addressHistory = new ArrayList<>();
 
 }

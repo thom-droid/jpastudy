@@ -10,6 +10,11 @@ public class MappedSuperClassApp {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
         EntityManager em = emf.createEntityManager();
+        elementCollectionTest(em);
+
+    }
+
+    private static void mappedSuperClassTest(EntityManager em){
         EntityTransaction tx = em.getTransaction();
 
         tx.begin();
@@ -26,5 +31,17 @@ public class MappedSuperClassApp {
 
         tx.commit();
 
+    }
+    private static void elementCollectionTest(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Member m1 = new Member();
+        m1.setName("자와자와");
+        m1.setEmail("jawajawa@naver.com");
+        m1.getNickNames().add("세리자와");
+        m1.getNickNames().add("카이지");
+        m1.getNickNames().add("오마에와");
+        em.persist(m1);
+        tx.commit();
     }
 }

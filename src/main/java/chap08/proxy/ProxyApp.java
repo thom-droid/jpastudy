@@ -18,7 +18,8 @@ public class ProxyApp {
         saveWithCascade(em);
 //        deleteWithoutCascade(em);
 //        deleteWithCascade(em);
-        removeOrphanObject(em);
+//        removeOrphanObject(em);
+        valueTypeCollectionUpdateTest(em);
     }
 
     public static void loadingTest(EntityManager em){
@@ -114,6 +115,11 @@ public class ProxyApp {
         dish2.setRestaurant(restaurant1);
         restaurant1.getDishes().add(dish2);
 
+        Dish dish = new Dish();
+        dish.setName("c");
+        dish.setRestaurant(restaurant1);
+        restaurant1.getDishes().add(dish);
+
         em.persist(restaurant1);
 
         tx.commit();
@@ -147,5 +153,29 @@ public class ProxyApp {
         Restaurant restaurant = em.find(Restaurant.class, 1L);
         restaurant.getDishes().clear();
         tx.commit();
+    }
+
+    private static void valueTypeCollectionUpdateTest(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Restaurant restaurant= em.getReference(Restaurant.class, 1L);
+        Dish dishProxy = em.getReference(Dish.class, 1L);
+
+        boolean isLoaded = em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(restaurant);
+        boolean isDishLoaded = em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(dishProxy);
+
+        System.out.println("is restaurant loaded? : " +isLoaded);
+        System.out.println("are dishes loaded? : " + isDishLoaded);
+        restaurant.getDishes().remove(0);
+
+
+        Dish dish = new Dish();
+        dish.setName("f");
+        dish.setRestaurant(restaurant);
+        restaurant.getDishes().add(dish);
+
+
+        tx.commit();
+
     }
 }

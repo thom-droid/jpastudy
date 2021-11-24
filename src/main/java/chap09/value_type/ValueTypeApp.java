@@ -15,6 +15,7 @@ public class ValueTypeApp {
 //        embeddableTest(em);
         valueTypeCollectionTest(em);
         valueTypeCollectionSearchTest(em);
+        valueTypeCollectionUpdate(em);
     }
 
 
@@ -80,6 +81,23 @@ public class ValueTypeApp {
 
         List<Address> addrHistory = employer.getAddressHistory();
         System.out.println(addrHistory.get(0));
+
+    }
+
+    private static void valueTypeCollectionUpdate(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+
+        Employer employer = em.find(Employer.class, 1L);
+        employer.setHomeAddress(new Address("뉴도시","뉴동","뉴읍"));
+
+        Set<String> favoriteFood = employer.getFavoriteFood();
+        favoriteFood.remove("새우볶음밥");
+        favoriteFood.add("고추잡채");
+
+        List<Address> addressList = employer.getAddressHistory();
+        addressList.remove(new Address("서울","동대문","무슨무슨동"));
+        addressList.add(new Address("새도시","새동","새읍"));
+        tx.commit();
 
     }
 }

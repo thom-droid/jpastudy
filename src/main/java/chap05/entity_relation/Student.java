@@ -2,15 +2,14 @@ package chap05.entity_relation;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.Fetch;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@ToString
 @Entity
 public class Student {
 
@@ -20,6 +19,7 @@ public class Student {
 
     private String name;
 
+    @ToString.Exclude
     @ManyToOne
     @JoinColumn(name="COURSE_ID")
     private Course course;

@@ -34,13 +34,15 @@ public class TestApp {
         }
     }
 
-    private static void testSave(EntityManager em) {
+    public static void testSave(EntityManager em) {
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
 
-        Course course = new Course("course1", "french", 25);
+        Course course = new Course("course1", "french", 25, new Professor("jim", "math"));
 
         em.persist(course);
 
-        Student student1 = new Student("st1","miso");
+        Student student1 = new Student("st1","jihyo");
         student1.setCourse(course);
         em.persist(student1);
 
@@ -48,6 +50,13 @@ public class TestApp {
         student2.setCourse(course);
         em.persist(student2);
 
+        Course course1 = new Course("course2", "english", 30, new Professor("john", "english"));
+        Course course2 = new Course("course3", "modern music", 10, new Professor("conan", "comedy"));
+        Course course3 = new Course("course4", "botanic", 30, new Professor("homer", "writer"));
+        em.persist(course1);
+        em.persist(course2);
+        em.persist(course3);
+        tx.commit();
     }
 
     private static void testFind(EntityManager em) {
@@ -71,7 +80,7 @@ public class TestApp {
 
     private static void updateRelation(EntityManager em) {
 
-        Course course2 = new Course("course2", "deutsch", 20);
+        Course course2 = new Course("course2", "deutsch", 20, new Professor("tom", "deutsch"));
         em.persist(course2);
 
         Student student1 = em.find(Student.class, "st2");

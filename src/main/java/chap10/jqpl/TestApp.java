@@ -3,13 +3,15 @@ package chap10.jqpl;
 import chap05.entity_relation.Course;
 import chap05.entity_relation.CourseDto;
 import chap05.entity_relation.Professor;
-import chap05.entity_relation.Student;
-import com.querydsl.jpa.impl.JPAQuery;
+import chap08.proxy.Dish;
+import chap08.proxy.ProxyApp;
 import org.hibernate.Session;
 import org.hibernate.jdbc.Work;
-import org.hibernate.jpa.internal.EntityManagerFactoryImpl;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
@@ -39,6 +41,10 @@ public class TestApp {
 //        projectionScala(em);
 //        projectionMultipleValue(em);
         projectWithNew(em);
+
+        ProxyApp.saveWithCascade(em);
+        namedQueryTest(em);
+
 
     }
 
@@ -87,29 +93,6 @@ public class TestApp {
 
         Professor professorTypedQuery = em.createQuery("SELECT c.professor FROM Course c", Professor.class).getSingleResult();
         System.out.println(professorTypedQuery.toString());
-//        professorTypedQuery.forEach(p -> System.out.println("professor : "+ p.toString()));
-
-//        TypedQuery<Course> course =
-//                em.createQuery("SELECT c FROM Course c", Course.class);
-//        List<Course> resultList = course.getResultList();
-//        resultList.forEach(r-> {
-//            System.out.println(r.getName() + " : " + r.toString());
-//            boolean isLoaded = em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(r);
-//            System.out.println(isLoaded);
-//        });
-//
-////        List<Course> resultList =
-////                em.createQuery("SELECT c.students FROM Course c", Course.class)
-////                .getResultList();
-//
-//        for (Object o : students.getResultList()) {
-//            Student s = (Student) o;
-//            System.out.println(s.getName() + " : " + s.toString());
-//            boolean isLoaded = em.getEntityManagerFactory().getPersistenceUnitUtil().isLoaded(s);
-//            System.out.println(isLoaded);
-//        }
-
-//        resultList.forEach(course -> System.out.println(course.toString()));
     }
 
     public static void projectionScala(EntityManager em){
@@ -131,5 +114,15 @@ public class TestApp {
                 .getResultList();
 
         list.forEach(d -> System.out.println(d.toString()));
+    }
+
+    public static void namedQueryTest(EntityManager em){
+        String ingredient = "진라면";
+        List<Dish> results = em.createNamedQuery("Dish.findByIngredient", Dish.class)
+                .setParameter("ingredient", ingredient)
+                .getResultList();
+
+        results.forEach((d -> System.out.println(d.toString())));
+
     }
 }

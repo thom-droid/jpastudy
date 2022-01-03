@@ -1,10 +1,12 @@
 package chap06.onetoone;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Getter
+@NoArgsConstructor
 @Entity
 public class Locker {
 

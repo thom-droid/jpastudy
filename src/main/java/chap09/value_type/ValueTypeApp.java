@@ -48,7 +48,6 @@ public class ValueTypeApp {
 
         tx.begin();
         Employer employer = new Employer();
-
         employer.setHomeAddress(new Address("서울","영등포","신길동"));
         employer.getFavoriteFood().add("차돌짬뽕");
         employer.getFavoriteFood().add("간짜장");

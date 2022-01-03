@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Entity
+//@Entity
 public class Team {
 
     @Id

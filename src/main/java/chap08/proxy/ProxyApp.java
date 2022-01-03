@@ -19,7 +19,7 @@ public class ProxyApp {
 //        deleteWithoutCascade(em);
 //        deleteWithCascade(em);
 //        removeOrphanObject(em);
-        valueTypeCollectionUpdateTest(em);
+//        valueTypeCollectionUpdateTest(em);
     }
 
     public static void loadingTest(EntityManager em){
@@ -120,9 +120,24 @@ public class ProxyApp {
         dish.setRestaurant(restaurant1);
         restaurant1.getDishes().add(dish);
 
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredient("깍두기");
+        Ingredient ingredient1 = new Ingredient();
+        ingredient1.setIngredient("진라면");
+        dish.getIngredientSet().add(ingredient);
+        dish.getIngredientSet().add(ingredient1);
+
         em.persist(restaurant1);
 
         tx.commit();
+        for(Dish d :restaurant1.getDishes()){
+            System.out.println(d.getRestaurant());
+            System.out.println(d.getName());
+            for (Ingredient i :d.getIngredientSet()){
+                System.out.println(i.getIngredient());
+            }
+        }
+
     }
     public static void deleteWithoutCascade(EntityManager em){
 
@@ -178,4 +193,13 @@ public class ProxyApp {
         tx.commit();
 
     }
+
+    private static void manyTomanyTest(EntityManager em){
+        EntityTransaction tx = em.getTransaction();
+
+
+
+
+    }
+
 }

@@ -12,6 +12,12 @@ public class JoinedStrategyApp {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("jpabook");
         EntityManager em = emf.createEntityManager();
+        populateItem(em);
+
+    }
+
+    public static void populateItem(EntityManager em){
+
         EntityTransaction tx = em.getTransaction();
 
         tx.begin();
@@ -20,17 +26,44 @@ public class JoinedStrategyApp {
         okNotOK.setArtist("radiohead");
         okNotOK.setName("4wd");
         okNotOK.setPrice(13000);
+
+        Album amnesiac = Album.builder()
+                .name("amnesiac")
+                .artist("radiohead")
+                .price(29000)
+                .build();
+
+        Album ambient1 = Album.builder()
+                .name("ambientwork1")
+                .artist("brian eno")
+                .price(15000)
+                .build();
+
+        Album refugee = Album.builder()
+                .name("refugee")
+                .artist("devendra banhart")
+                .price(20000)
+                .build();
+
+        Album ambient2 = Album.builder()
+                .name("ambient2")
+                .artist("brian eno")
+                .price(17000)
+                .build();
+
+        Album muzz = Album.builder()
+                .name("muzz")
+                .artist("muzz")
+                .price(22000)
+                .build();
+
         em.persist(okNotOK);
+        em.persist(ambient1);
+        em.persist(amnesiac);
+        em.persist(refugee);
+        em.persist(ambient2);
+        em.persist(muzz);
 
         tx.commit();
-
-        tx.begin();
-        Album album = em.find(Album.class, 1L);
-        System.out.println(album.getId());
-        System.out.println(album.getName());
-        System.out.println(album.getPrice());
-        System.out.println(album.toString());
-        tx.commit();
-
     }
 }
